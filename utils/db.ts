@@ -16,7 +16,11 @@ export async function dbConnect() {
   if (cached.connection) return cached.connection;
   
   if (!cached.promise) {
-   cached.promise = mongoose.connect(MONGODB_URI).then(() => {
+    const opts = {
+        bufferCommands: true,
+        maxPoolSize: 10,
+    }
+   cached.promise = mongoose.connect(MONGODB_URI, opts).then(() => {
       return mongoose.connection;
     }).catch((err) => {
       console.error("MongoDB connection failed:", err);
